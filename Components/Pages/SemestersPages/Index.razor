@@ -1,0 +1,43 @@
+﻿@page "/semesters"
+@using Microsoft.EntityFrameworkCore
+@using BlazorApps1.Models
+@inject IDbContextFactory<BlazorApps1.Data.ApplicationDbContext> DbFactory
+
+<PageTitle>Semesters</PageTitle>
+
+<h1>Semesters</h1>
+
+<p>
+    <a href="semesters/create" class="btn btn-success">Create New</a>
+</p>
+
+@{
+    using var context = DbFactory.CreateDbContext();
+    var semesters = context.Semesters.ToList();
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var semester in semesters)
+        {
+            <tr>
+                <td>@semester.Name</td>
+                <td>@semester.StartDate.ToString("dd/MM/yyyy")</td>
+                <td>@semester.EndDate.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a class="btn btn-success" style="background-color:darkkhaki" href="@($"semesters/edit?id={semester.Id}")">Edit</a>
+                    <a class="btn btn-success" style="background-color:cadetblue" href="@($"semesters/details?id={semester.Id}")">Details</a>
+                    <a class="btn btn-success" style="background-color:red" href="@($"semesters/delete?id={semester.Id}")">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

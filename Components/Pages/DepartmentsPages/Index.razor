@@ -1,0 +1,39 @@
+﻿@page "/departments"
+@using Microsoft.EntityFrameworkCore
+@using BlazorApps1.Models
+@inject IDbContextFactory<BlazorApps1.Data.ApplicationDbContext> DbFactory
+
+<PageTitle>Index Departments</PageTitle>
+
+<h1>Departments</h1>
+
+<p>
+    <a class="btn btn-success" href="departments/create">Create New</a>
+</p>
+
+@{
+    using var context = DbFactory.CreateDbContext();
+    var departments = context.Departments.ToList();
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var department in departments)
+        {
+            <tr>
+                <td>@department.Name</td>
+                <td>
+                    <a class="btn btn-success" style="background-color:darkkhaki" href="@($"/departments/edit?id={department.Id}")">Edit</a>
+                    <a class="btn btn-success" style="background-color:cadetblue" href="@($"/departments/details?id={department.Id}")">Details</a>
+                    <a class="btn btn-success" style="background-color:red" href="@($"/departments/delete?id={department.Id}")">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
